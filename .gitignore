@@ -1,0 +1,18 @@
+# Dependências e saídas de build
+node_modules/
+dist/
+.angular/
+*.tsbuildinfo
+
+# Segredos: só o .env.example entra no repositório
+.env
+.env.*
+!.env.example
+
+# Logs de ferramenta
+npm-debug.log*
+pnpm-debug.log*
+
+# Sistema e editor
+.DS_Store
+.idea/

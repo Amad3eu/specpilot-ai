@@ -1,0 +1,76 @@
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+      <path d="M3 17 29 4l-7 24-6-9-13-2Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+      <path d="m16 19 13-15" fill="none" stroke="currentColor" stroke-width="2.2" />
+    </svg>
+    <div>
+      <h1>SpecPilot</h1>
+      <p>Da nota de reunião ao backlog aprovado</p>
+    </div>
+  </div>
+
+  <nav aria-label="Áreas do SpecPilot">
+    <button type="button" [attr.aria-current]="tab() === 'board' ? 'page' : null" (click)="tab.set('board')">
+      Board
+      @if (store.pendingCount() > 0) {
+        <span class="badge">{{ store.pendingCount() }}<span class="sr-only"> esperando aprovação</span></span>
+      }
+    </button>
+    <button type="button" [attr.aria-current]="tab() === 'knowledge' ? 'page' : null" (click)="tab.set('knowledge')">
+      ADRs e conhecimento
+      @if (store.proposedAdrs().length > 0) {
+        <span class="badge">{{ store.proposedAdrs().length }}<span class="sr-only"> ADRs propostos</span></span>
+      }
+    </button>
+    <button type="button" [attr.aria-current]="tab() === 'copilot' ? 'page' : null" (click)="tab.set('copilot')">
+      Copiloto
+    </button>
+  </nav>
+
+  @if (store.mode(); as mode) {
+    <dl class="mode" aria-label="Como a API está rodando">
+      <div>
+        <dt>Modelo</dt>
+        <dd>{{ mode.provider }}</dd>
+      </div>
+      <div>
+        <dt>Dados</dt>
+        <dd>{{ mode.store === 'memory' ? 'Postgres embutido' : 'PostgreSQL' }}</dd>
+      </div>
+      <div>
+        <dt>Cache</dt>
+        <dd>{{ mode.cache === 'memory' ? 'memória' : 'Redis' }}</dd>
+      </div>
+    </dl>
+  }
+</header>
+
+<app-metrics-bar />
+
+<main>
+  @if (store.error(); as message) {
+    <p class="notice alert" role="alert">{{ message }}</p>
+  }
+  @if (store.mode()?.provider === 'mock') {
+    <p class="notice">
+      Modo de avaliação: as respostas vêm de um provedor mock, sem rede e sem chave. O workflow, a busca híbrida e o
+      gate de aprovação são os mesmos de produção.
+    </p>
+  }
+
+  @switch (tab()) {
+    @case ('board') {
+      <div class="workspace">
+        <app-notes-panel />
+        <app-board />
+      </div>
+    }
+    @case ('knowledge') {
+      <app-knowledge />
+    }
+    @case ('copilot') {
+      <app-copilot />
+    }
+  }
+</main>

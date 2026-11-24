@@ -1,0 +1,28 @@
+{
+  "name": "specpilot-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SpecPilot: turns meeting notes into epics, user stories with Gherkin acceptance criteria and ADRs, using a LangGraph multi-agent workflow, Hybrid RAG (pgvector) with human approval, an Angular board and an MCP server.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @specpilot/api --filter @specpilot/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "check": "pnpm lint && pnpm typecheck && pnpm build && pnpm test",
+    "mcp": "pnpm --filter @specpilot/mcp-server start"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.8",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Um push novo no mesmo ramo cancela a execução anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: lint, typecheck, build, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # O CI nunca chama um modelo nem sobe banco: provedor mock e Postgres embutido.
+      LLM_PROVIDERS: mock
+      NG_CLI_ANALYTICS: false
+    steps:
+      - uses: actions/checkout@v7
+
+      # Lê a versão do pnpm do campo "packageManager" do package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          # O piso declarado em "engines". O que passa aqui passa nas versões mais novas.
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # O mesmo comando que roda na máquina: lint, typecheck, build e testes dos quatro workspaces.
+      - run: pnpm check

@@ -1,0 +1,31 @@
+{
+  "name": "@specpilot/shared-schemas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Contratos Zod do SpecPilot: backlog, ADRs, auditoria e eventos de stream. API, web e servidor MCP falam por eles.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "@specpilot/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./constants": {
+      "@specpilot/source": "./src/constants.ts",
+      "types": "./dist/constants.d.ts",
+      "default": "./dist/constants.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc",
+    "test": "node --conditions=@specpilot/source --import tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  }
+}

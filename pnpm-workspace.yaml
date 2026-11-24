@@ -1,0 +1,17 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Versão única para o que mais de um workspace usa: no package.json fica "catalog:".
+catalog:
+  # O Angular 22 exige TypeScript 6.0.x. O monorepo inteiro usa a mesma versão.
+  typescript: ~6.0.3
+  zod: ^4.6.7
+
+# Nenhuma dependência roda script na instalação. Estas quatro pedem um, e funcionam sem
+# ele: o binário chega pelo pacote opcional da plataforma. É a lista que o Angular CLI gera.
+allowBuilds:
+  "@parcel/watcher": false
+  esbuild: false
+  lmdb: false
+  msgpackr-extract: false

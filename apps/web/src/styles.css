@@ -1,0 +1,253 @@
+/* Tipografia servida pelo próprio app: a tela funciona sem rede.
+   Barlow nasceu da sinalização de transporte, e a versão condensada lembra a letra das
+   faixas de voo. A monoespaçada aparece só onde o texto é código: os passos Gherkin. */
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/600.css";
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+
+:root {
+  /* Base */
+  --sky: #eef2f5;
+  --panel: #ffffff;
+  --ink: #16232e;
+  --ink-soft: #4a5a68;
+  --line: #cfd8df;
+  --route: #0b5c8a;
+  --route-dark: #08466a;
+
+  /* Cor só carrega status: é a borda de cada faixa de voo e o cabeçalho de cada baia. */
+  --hold: #a86200;
+  --hold-bg: #fff3d9;
+  --clear: #1b7550;
+  --clear-bg: #e2f3ea;
+  --enroute: #0b5c8a;
+  --enroute-bg: #e1eff7;
+  --landed: #5a6873;
+  --landed-bg: #e9edf0;
+  --alert: #b3261e;
+  --alert-bg: #fce9e7;
+
+  --font: "Barlow", system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+  --font-code: "IBM Plex Mono", ui-monospace, monospace;
+
+  --gap: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--sky);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+/* Foco sempre visível, para quem navega pelo teclado. */
+:focus-visible {
+  outline: 3px solid var(--route);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--route);
+  border-radius: 3px;
+  background: var(--route);
+  color: #fff;
+  font-weight: 600;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--route-dark);
+}
+
+.button:disabled {
+  border-color: var(--line);
+  background: var(--line);
+  color: var(--ink-soft);
+  cursor: not-allowed;
+}
+
+.button.quiet {
+  border-color: var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.button.quiet:hover:not(:disabled) {
+  border-color: var(--ink-soft);
+  background: var(--sky);
+}
+
+.button.danger {
+  border-color: var(--alert);
+  background: var(--panel);
+  color: var(--alert);
+}
+
+.button.danger:hover:not(:disabled) {
+  background: var(--alert-bg);
+}
+
+.button.small {
+  min-height: 34px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--ink-soft);
+  border-radius: 3px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.panel {
+  padding: var(--gap);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+}
+
+.stack > * + * {
+  margin-top: 12px;
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+/* Etiqueta de valor: prioridade, impacto, confiança, tipo de documento. */
+.tag {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--sky);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.tag.hold {
+  border-color: var(--hold);
+  background: var(--hold-bg);
+  color: var(--hold);
+}
+
+.tag.clear {
+  border-color: var(--clear);
+  background: var(--clear-bg);
+  color: var(--clear);
+}
+
+.tag.alert {
+  border-color: var(--alert);
+  background: var(--alert-bg);
+  color: var(--alert);
+}
+
+.notice {
+  padding: 10px 12px;
+  border-left: 4px solid var(--route);
+  border-radius: 2px;
+  background: var(--enroute-bg);
+}
+
+.notice.hold {
+  border-color: var(--hold);
+  background: var(--hold-bg);
+}
+
+.notice.alert {
+  border-color: var(--alert);
+  background: var(--alert-bg);
+}
+
+.code {
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Arrastar e soltar do board. A prévia do card arrastado é presa ao body, fora do
+   componente: por isso estas três regras são globais. */
+.cdk-drag-preview {
+  box-shadow: 0 6px 18px rgb(22 35 46 / 0.25);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.35;
+}
+
+/* O único movimento da tela: os cards abrindo espaço durante o arrasto. Só para quem não
+   pediu movimento reduzido ao sistema. */
+@media (prefers-reduced-motion: no-preference) {
+  .cdk-drop-list-dragging app-story-strip:not(.cdk-drag-placeholder) {
+    transition: transform 150ms ease;
+  }
+}

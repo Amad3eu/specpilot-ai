@@ -1,0 +1,37 @@
+# Infra local do SpecPilot. Opcional: sem ela, a API sobe com Postgres embutido e cache em memória.
+# Subir: docker compose -f infra/docker-compose.yml up -d
+# Zerar: docker compose -f infra/docker-compose.yml down -v
+name: specpilot-ai
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: specpilot
+      POSTGRES_PASSWORD: specpilot
+      POSTGRES_DB: specpilot
+    ports:
+      # Só na própria máquina: a senha é de desenvolvimento e não deve ficar exposta na rede.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Roda na criação do volume. A API roda o mesmo arquivo ao subir, e ele é idempotente.
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U specpilot -d specpilot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

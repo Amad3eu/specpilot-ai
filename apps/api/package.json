@@ -1,0 +1,36 @@
+{
+  "name": "@specpilot/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "API do SpecPilot: Fastify, workflow multiagente em LangGraph, Hybrid RAG com pgvector, guardrails e trilha de auditoria.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "@specpilot/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsx watch --conditions=@specpilot/source src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc",
+    "test": "node --conditions=@specpilot/source --import tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.6.0",
+    "@electric-sql/pglite-pgvector": "^0.1.0",
+    "@langchain/core": "^1.4.1",
+    "@langchain/langgraph": "^1.7.5",
+    "@specpilot/shared-schemas": "workspace:*",
+    "fastify": "^5.12.0",
+    "pg": "^8.23.0",
+    "redis": "^6.4.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.0"
+  }
+}
